@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_USER=postgres
+      - DB_HOST=postgres
+      - DB_NAME=axelari_auth
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
+      - JWT_SECRET=docker_secret_key
+    depends_on:
+      - postgres
+    networks:
+      - axelari-network
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=axelari_auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./auth-service/src/db/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - axelari-network
+
+networks:
+  axelari-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
