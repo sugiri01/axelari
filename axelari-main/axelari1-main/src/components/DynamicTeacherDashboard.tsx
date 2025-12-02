@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, AlertTriangle, Award, ChevronRight, BarChart3, Loader } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 interface ClassStats {
   totalStudents: number;
@@ -349,19 +349,18 @@ export function DynamicTeacherDashboard() {
               {recentAlerts.map((alert, idx) => (
                 <div
                   key={idx}
-                  className={`p-4 rounded-xl border ${
-                    alert.severity === 'high' ? 'bg-red-50 border-red-100' :
-                    alert.severity === 'medium' ? 'bg-yellow-50 border-yellow-100' :
-                    'bg-green-50 border-green-100'
-                  }`}
+                  className={`p-4 rounded-xl border ${alert.severity === 'high' ? 'bg-red-50 border-red-100' :
+                      alert.severity === 'medium' ? 'bg-yellow-50 border-yellow-100' :
+                        'bg-green-50 border-green-100'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <AlertTriangle
                       size={18}
                       className={
                         alert.severity === 'high' ? 'text-red-500 mt-0.5' :
-                        alert.severity === 'medium' ? 'text-yellow-500 mt-0.5' :
-                        'text-green-500 mt-0.5'
+                          alert.severity === 'medium' ? 'text-yellow-500 mt-0.5' :
+                            'text-green-500 mt-0.5'
                       }
                     />
                     <div className="flex-1 min-w-0">

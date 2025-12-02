@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 
 interface RegisterProps {
   onRegister: (userId: string, role: string) => void;
@@ -13,13 +13,13 @@ export function Register({ onRegister, onSwitchToLogin }: RegisterProps) {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'student' as 'student' | 'teacher' | 'parent' | 'admin'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const { register } = useAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -41,155 +41,18 @@ export function Register({ onRegister, onSwitchToLogin }: RegisterProps) {
     }
 
     try {
-      console.log('Attempting registration via edge function');
-
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/auth-register`;
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          name: formData.fullName,
-          role: formData.role,
-        }),
-      });
-
-      const data = await response.json();
-
-      console.log('Registration response:', response.status, data);
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create account');
-      }
-
-      if (data.user && data.session) {
-        console.log('Registration successful');
-
-        if (formData.role === 'student') {
-          await supabase.from('learning_paths').insert({
-            student_id: data.user.id,
-            current_phase: 1,
-            learning_speed: 'medium',
-            cognitive_profile: {}
-          });
-        }
-
-        await supabase.auth.setSession({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        });
-
-        setSuccess(true);
-        setTimeout(() => {
-          onRegister(data.user.id, data.user.role);
-        }, 1500);
-      } else {
-        throw new Error('Invalid response from server');
-      }
-    } catch (err: any) {
-      console.error('Registration error:', err);
-      console.error('Error details:', {
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      });
-      setError(err.message || 'Failed to create account');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDirectRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      console.log('Attempting direct registration with Supabase');
-
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            name: formData.fullName,
-            role: formData.role,
-          },
-        },
-      });
-
-      if (authError) {
-        console.error('Direct registration auth error:', authError);
-        throw authError;
-      }
-
-      if (!authData.user) {
-        throw new Error('Registration failed - no user returned');
-      }
-
-      console.log('User created, creating profile...');
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          id: authData.user.id,
-          email: formData.email,
-          full_name: formData.fullName,
-          role: formData.role,
-        });
-
-      if (profileError) {
-        console.error('Profile creation error:', profileError);
-        throw new Error('Failed to create profile: ' + profileError.message);
-      }
-
-      console.log('Profile created successfully');
-
-      if (formData.role === 'student') {
-        console.log('Creating learning path for student...');
-        const { error: lpError } = await supabase.from('learning_paths').insert({
-          student_id: authData.user.id,
-          current_phase: 1,
-          learning_speed: 'medium',
-          cognitive_profile: {}
-        });
-
-        if (lpError) {
-          console.warn('Learning path creation error:', lpError);
-        }
-      }
-
-      if (authData.session) {
-        await supabase.auth.setSession({
-          access_token: authData.session.access_token,
-          refresh_token: authData.session.refresh_token,
-        });
-      }
+      await register(formData.fullName, formData.email, formData.password);
 
       setSuccess(true);
       setTimeout(() => {
-        onRegister(authData.user.id, formData.role);
+        const userId = localStorage.getItem('userId');
+        const userRole = localStorage.getItem('userRole') || 'student';
+        if (userId) {
+          onRegister(userId, userRole);
+        }
       }, 1500);
-
     } catch (err: any) {
-      console.error('Direct registration error:', err);
+      console.error('Registration error:', err);
       setError(err.message || 'Failed to create account');
       setLoading(false);
     }
@@ -261,24 +124,6 @@ export function Register({ onRegister, onSwitchToLogin }: RegisterProps) {
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
-                  I am a
-                </label>
-                <select
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                >
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="parent">Parent</option>
-                  <option value="admin">Administrator</option>
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                   Password
                 </label>
@@ -322,15 +167,6 @@ export function Register({ onRegister, onSwitchToLogin }: RegisterProps) {
                 className="w-full py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Creating Account...' : 'Create Account'}
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDirectRegister}
-                disabled={loading}
-                className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-3"
-              >
-                {loading ? 'Creating...' : 'Try Direct Registration (Debug)'}
               </button>
             </form>
           )}

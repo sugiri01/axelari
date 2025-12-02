@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+asyncpg
+python-dotenv
+pydantic
+pydantic-settings
+upstash-redis
+pyjwt
+bcrypt
+alembic
+google-generativeai
+openai

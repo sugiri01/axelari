@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Brain, Eye, Hand, Calculator, MessageSquare, Users, User, Music, Leaf, ArrowRight, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 interface TestQuestion {
   id: string;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, TrendingUp, Award, Medal } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 interface LeaderboardEntry {
   id: string;
@@ -98,11 +98,10 @@ export function Leaderboard() {
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={`px-4 py-2 rounded-xl font-medium transition-colors ${
-              category === cat
+            className={`px-4 py-2 rounded-xl font-medium transition-colors ${category === cat
                 ? 'bg-[#4C6EF5] text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+              }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
@@ -124,9 +123,8 @@ export function Leaderboard() {
             {entries.map((entry, index) => (
               <div
                 key={entry.id}
-                className={`p-6 flex items-center gap-4 hover:bg-gray-50 transition-colors ${
-                  index < 3 ? 'bg-gradient-to-r from-gray-50 to-transparent' : ''
-                }`}
+                className={`p-6 flex items-center gap-4 hover:bg-gray-50 transition-colors ${index < 3 ? 'bg-gradient-to-r from-gray-50 to-transparent' : ''
+                  }`}
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getRankColor(entry.rank)} flex items-center justify-center flex-shrink-0`}>
                   {getRankIcon(entry.rank)}

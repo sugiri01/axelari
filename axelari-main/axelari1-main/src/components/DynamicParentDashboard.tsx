@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Target, Calendar, Award, Clock, AlertCircle, CheckCircle, Loader, ChevronDown } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 interface ChildData {
   id: string;
@@ -291,24 +291,22 @@ export function DynamicParentDashboard() {
                 <div className="space-y-3">
                   {recentActivity.map((activity, idx) => (
                     <div key={idx} className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        activity.type === 'success' ? 'bg-green-100' :
-                        activity.type === 'warning' ? 'bg-orange-100' :
-                        'bg-blue-100'
-                      }`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${activity.type === 'success' ? 'bg-green-100' :
+                          activity.type === 'warning' ? 'bg-orange-100' :
+                            'bg-blue-100'
+                        }`}>
                         {activity.type === 'success' ? <CheckCircle size={20} className="text-green-600" /> :
-                         activity.type === 'warning' ? <AlertCircle size={20} className="text-orange-600" /> :
-                         <Clock size={20} className="text-blue-600" />}
+                          activity.type === 'warning' ? <AlertCircle size={20} className="text-orange-600" /> :
+                            <Clock size={20} className="text-blue-600" />}
                       </div>
                       <div className="flex-1">
                         <div className="font-medium text-gray-900">{activity.activity}</div>
                         <div className="text-sm text-gray-500">{activity.date}</div>
                       </div>
                       {activity.score && (
-                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          activity.type === 'success' ? 'bg-green-50 text-green-600' :
-                          'bg-orange-50 text-orange-600'
-                        }`}>
+                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${activity.type === 'success' ? 'bg-green-50 text-green-600' :
+                            'bg-orange-50 text-orange-600'
+                          }`}>
                           {activity.score}
                         </div>
                       )}

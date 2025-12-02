@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, CheckCircle, AlertCircle, Info, Award, BookOpen, X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 interface Notification {
   id: string;
@@ -179,9 +179,8 @@ export function Notifications() {
             return (
               <div
                 key={notification.id}
-                className={`bg-white rounded-2xl border p-6 transition-all hover:shadow-md ${
-                  notification.read ? 'border-gray-100' : 'border-blue-200 bg-blue-50/30'
-                }`}
+                className={`bg-white rounded-2xl border p-6 transition-all hover:shadow-md ${notification.read ? 'border-gray-100' : 'border-blue-200 bg-blue-50/30'
+                  }`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center flex-shrink-0`}>

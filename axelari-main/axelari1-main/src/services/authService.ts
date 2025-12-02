@@ -1,4 +1,6 @@
-import api from './api';
+import axios from 'axios';
+
+const AUTH_BASE = 'http://localhost:3000';
 
 export interface User {
     id: number;
@@ -12,16 +14,21 @@ export interface AuthResponse {
 }
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>('/auth/login', { email, password });
+    const response = await axios.post<AuthResponse>(`${AUTH_BASE}/auth/login`, { email, password });
     return response.data;
 };
 
 export const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post<AuthResponse>('/auth/register', { name, email, password });
+    const response = await axios.post<AuthResponse>(`${AUTH_BASE}/auth/register`, { name, email, password });
     return response.data;
 };
 
 export const getMe = async (): Promise<User> => {
-    const response = await api.get<User>('/auth/me');
+    const token = localStorage.getItem('token');
+    const response = await axios.get<User>(`${AUTH_BASE}/auth/me`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
     return response.data;
 };

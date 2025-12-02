@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+export const FASTAPI_BASE = 'http://localhost:8000/api/v1';
+export const AUTH_BASE = 'http://localhost:3000';
+
 const api = axios.create({
-    baseURL: 'http://localhost:3000', // Auth service URL
+    baseURL: FASTAPI_BASE, // FastAPI backend URL
     headers: {
         'Content-Type': 'application/json',
     },

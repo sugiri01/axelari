@@ -1,0 +1,89 @@
+tngtech/tng-r1t-chimera:free
+openrouter/bert-nebulon-alpha
+x-ai/grok-4.1-fast:free
+kwaipilot/kat-coder-pro:free
+mistralai/voxtral-small-24b-2507 (Paid)
+nvidia/nemotron-nano-12b-v2-vl:free
+deepcogito/cogito-v2-preview-llama-405b (Paid)
+nvidia/llama-3.3-nemotron-super-49b-v1.5 (Paid)
+alibaba/tongyi-deepresearch-30b-a3b:free
+meituan/longcat-flash-chat:free
+nvidia/nemotron-nano-9b-v2:free
+deepcogito/cogito-v2-preview-llama-70b (Paid)
+deepcogito/cogito-v2-preview-llama-109b-moe (Paid)
+mistralai/mistral-medium-3.1 (Paid)
+openai/gpt-oss-20b:free
+mistralai/codestral-2508 (Paid)
+z-ai/glm-4.5-air:free
+qwen/qwen3-coder:free
+moonshotai/kimi-k2:free
+mistralai/devstral-medium (Paid)
+mistralai/devstral-small (Paid)
+cognitivecomputations/dolphin-mistral-24b-venice-edition:free
+google/gemma-3n-e2b-it:free
+tngtech/deepseek-r1t2-chimera:free
+mistralai/mistral-small-3.2-24b-instruct (Paid)
+mistralai/magistral-small-2506 (Paid)
+mistralai/magistral-medium-2506:thinking (Paid)
+mistralai/magistral-medium-2506 (Paid)
+mistralai/devstral-small-2505 (Paid)
+google/gemma-3n-e4b-it:free
+nousresearch/deephermes-3-mistral-24b-preview (Paid)
+mistralai/mistral-medium-3 (Paid)
+qwen/qwen3-4b:free
+meta-llama/llama-guard-4-12b (Paid)
+qwen/qwen3-235b-a22b:free
+tngtech/deepseek-r1t-chimera:free
+alfredpros/codellama-7b-instruct-solidity (Paid)
+nvidia/llama-3.1-nemotron-ultra-253b-v1 (Paid)
+meta-llama/llama-4-maverick (Paid)
+meta-llama/llama-4-scout (Paid)
+mistralai/mistral-small-3.1-24b-instruct:free
+mistralai/mistral-small-3.1-24b-instruct (Paid)
+google/gemma-3-4b-it:free
+google/gemma-3-12b-it:free
+google/gemma-3-27b-it:free
+mistralai/mistral-saba (Paid)
+meta-llama/llama-guard-3-8b (Paid)
+aion-labs/aion-rp-llama-3.1-8b (Paid)
+mistralai/mistral-small-24b-instruct-2501 (Paid)
+deepseek/deepseek-r1-distill-llama-70b (Paid)
+mistralai/codestral-2501 (Paid)
+google/gemini-2.0-flash-exp:free
+meta-llama/llama-3.3-70b-instruct:free
+meta-llama/llama-3.3-70b-instruct (Paid)
+mistralai/mistral-large-2411 (Paid)
+mistralai/mistral-large-2407 (Paid)
+mistralai/pixtral-large-2411 (Paid)
+mistralai/ministral-8b (Paid)
+mistralai/ministral-3b (Paid)
+nvidia/llama-3.1-nemotron-70b-instruct (Paid)
+meta-llama/llama-3.2-1b-instruct (Paid)
+meta-llama/llama-3.2-90b-vision-instruct (Paid)
+meta-llama/llama-3.2-3b-instruct:free
+meta-llama/llama-3.2-3b-instruct (Paid)
+meta-llama/llama-3.2-11b-vision-instruct (Paid)
+neversleep/llama-3.1-lumimaid-8b (Paid)
+mistralai/pixtral-12b (Paid)
+nousresearch/hermes-3-llama-3.1-70b (Paid)
+nousresearch/hermes-3-llama-3.1-405b:free
+nousresearch/hermes-3-llama-3.1-405b (Paid)
+meta-llama/llama-3.1-405b (Paid)
+meta-llama/llama-3.1-8b-instruct (Paid)
+meta-llama/llama-3.1-405b-instruct (Paid)
+meta-llama/llama-3.1-70b-instruct (Paid)
+mistralai/mistral-nemo (Paid)
+mistralai/mistral-7b-instruct:free
+mistralai/mistral-7b-instruct (Paid)
+nousresearch/hermes-2-pro-llama-3-8b (Paid)
+mistralai/mistral-7b-instruct-v0.3 (Paid)
+meta-llama/llama-guard-2-8b (Paid)
+meta-llama/llama-3-8b-instruct (Paid)
+meta-llama/llama-3-70b-instruct (Paid)
+mistralai/mixtral-8x22b-instruct (Paid)
+mistralai/mistral-large (Paid)
+mistralai/mistral-small (Paid)
+mistralai/mistral-tiny (Paid)
+mistralai/mistral-7b-instruct-v0.2 (Paid)
+mistralai/mixtral-8x7b-instruct (Paid)
+mistralai/mistral-7b-instruct-v0.1 (Paid)

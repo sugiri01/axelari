@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Send, BookOpen, HelpCircle, ListChecks, Loader } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { httpPost } from '../services/httpClient';
+import { FASTAPI_BASE } from '../services/api';
 
 interface Message {
   id: string;
@@ -22,10 +23,14 @@ export function AIPanel() {
   const [isLoading, setIsLoading] = useState(false);
 
   const quickActions = [
-    { icon: BookOpen, label: 'Explain differently', color: 'bg-blue-50 text-blue-600' },
-    { icon: HelpCircle, label: 'Give example', color: 'bg-teal-50 text-teal-600' },
-    { icon: ListChecks, label: 'Quiz me', color: 'bg-purple-50 text-purple-600' },
+    { icon: BookOpen, label: 'Explain differently', action: 'Can you explain this concept in a different way?' },
+    { icon: HelpCircle, label: 'Give example', action: 'Can you give me a practical example?' },
+    { icon: ListChecks, label: 'Quiz me', action: 'Can you quiz me on this topic?' },
   ];
+
+  const handleQuickAction = (action: string) => {
+    setInput(action);
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -43,38 +48,21 @@ export function AIPanel() {
     setIsLoading(true);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('Not authenticated');
-
       const history = messages.slice(1).map(msg => ({
         role: msg.type === 'user' ? 'user' : 'assistant',
         content: msg.content
       }));
 
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-tutor-chat`;
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: currentInput,
-          history: history,
-          topicId: null
-        })
+      const response = await httpPost(`${FASTAPI_BASE}/ai/chat`, {
+        message: currentInput,
+        history: history,
+        topic_id: null
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to get AI response');
-      }
-
-      const result = await response.json();
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: result.response || "I'm here to help! Could you please rephrase your question?",
+        content: response.response || "I'm here to help! Could you please rephrase your question?",
         timestamp: new Date(),
       };
 
@@ -107,15 +95,19 @@ export function AIPanel() {
         </div>
 
         <div className="flex gap-2">
-          {quickActions.map((action, idx) => {
-            const Icon = action.icon;
+          {quickActions.map((item, idx) => {
+            const Icon = item.icon;
             return (
               <button
                 key={idx}
-                className={`flex-1 py-2.5 px-3 rounded-lg ${action.color} text-xs font-medium transition-all hover:shadow-md`}
+                onClick={() => handleQuickAction(item.action)}
+                className={`flex-1 py-2.5 px-3 rounded-lg ${idx === 0 ? 'bg-blue-50 text-blue-600' :
+                    idx === 1 ? 'bg-teal-50 text-teal-600' :
+                      'bg-purple-50 text-purple-600'
+                  } text-xs font-medium transition-all hover:shadow-md`}
               >
                 <Icon size={14} className="mx-auto mb-1" />
-                <span className="block">{action.label}</span>
+                <span className="block">{item.label}</span>
               </button>
             );
           })}
@@ -129,16 +121,22 @@ export function AIPanel() {
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                message.type === 'user'
-                  ? 'bg-[#4C6EF5] text-white'
-                  : 'bg-gray-50 text-gray-800'
-              }`}
+              className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.type === 'user'
+                ? 'bg-[#4C6EF5] text-white'
+                : 'bg-gray-50 text-gray-800'
+                }`}
             >
               <p className="text-sm leading-relaxed">{message.content}</p>
             </div>
           </div>
         ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-gray-50 rounded-2xl px-4 py-3">
+              <Loader size={16} className="animate-spin text-gray-600" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="p-6 border-t border-gray-100">

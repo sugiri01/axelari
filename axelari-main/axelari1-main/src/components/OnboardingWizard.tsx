@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GraduationCap, BookOpen, Target, Sparkles } from 'lucide-react';
 import { PsychometricTest } from './PsychometricTest';
-import { supabase } from '../lib/supabase';
+// Supabase removed - using FastAPI backend
 
 type OnboardingStep = 'welcome' | 'profile' | 'psychometric' | 'complete';
 
@@ -128,11 +128,10 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                           });
                         }
                       }}
-                      className={`p-3 rounded-xl border-2 font-medium transition-all ${
-                        isSelected
+                      className={`p-3 rounded-xl border-2 font-medium transition-all ${isSelected
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                      }`}
+                        }`}
                     >
                       {subject}
                     </button>
@@ -169,11 +168,10 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                           });
                         }
                       }}
-                      className={`w-full p-3 rounded-xl border-2 font-medium text-left transition-all ${
-                        isSelected
+                      className={`w-full p-3 rounded-xl border-2 font-medium text-left transition-all ${isSelected
                           ? 'border-teal-500 bg-teal-50 text-teal-700'
                           : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                      }`}
+                        }`}
                     >
                       {goal}
                     </button>
